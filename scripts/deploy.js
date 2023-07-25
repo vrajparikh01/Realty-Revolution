@@ -15,20 +15,31 @@ async function main() {
 
   console.log("Minting 5 properties...");
 
-  let transaction = await realEstate
-    .connect(seller)
-    .safeMint("https://pin.ski/3O5iKfz");
-  await transaction.wait();
+  for (let i = 0; i < 3; i++) {
+    const transaction = await realEstate
+      .connect(seller)
+      .safeMint(
+        `https://ipfs.io/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${
+          i + 1
+        }.json`
+      );
+    await transaction.wait();
+  }
 
-  transaction = await realEstate
-    .connect(seller)
-    .safeMint("https://pin.ski/3Q5H43t");
-  await transaction.wait();
+  // let transaction = await realEstate
+  //   .connect(seller)
+  //   .safeMint("https://pin.ski/3O5iKfz");
+  // await transaction.wait();
 
-  transaction = await realEstate
-    .connect(seller)
-    .safeMint("https://pin.ski/44xaA6G");
-  await transaction.wait();
+  // transaction = await realEstate
+  //   .connect(seller)
+  //   .safeMint("https://pin.ski/3Q5H43t");
+  // await transaction.wait();
+
+  // transaction = await realEstate
+  //   .connect(seller)
+  //   .safeMint("https://pin.ski/44xaA6G");
+  // await transaction.wait();
 
   const Escrow = await hre.ethers.getContractFactory("Escrow");
   const escrow = await Escrow.deploy(
