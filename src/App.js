@@ -15,6 +15,8 @@ function App() {
   const [provider, setProvider] = useState("");
   const [escrow, setEscrow] = useState("");
   const [homes, setHomes] = useState([]);
+  const [home, setHome] = useState({});
+  const [toggle, setToggle] = useState(false);
 
   const loadBlockchainData = async () => {
     // connect to metamask
@@ -68,6 +70,11 @@ function App() {
     loadBlockchainData();
   }, []);
 
+  const toggleFn = (home) => {
+    setHome(home);
+    toggle ? setToggle(false) : setToggle(true);
+  };
+
   return (
     <div>
       <Navigation account={account} setAccount={setAccount} />
@@ -77,7 +84,7 @@ function App() {
         <hr />
         <div className="cards">
           {homes.map((home, index) => (
-            <div className="card" key={index}>
+            <div className="card" key={index} onClick={() => toggleFn(home)}>
               <div className="card__image">
                 <img src={home.image} alt="Home" />
               </div>
@@ -92,22 +99,17 @@ function App() {
               </div>
             </div>
           ))}
-          <div className="card">
-            <div className="card__image">
-              <img src="" alt="Home" />
-            </div>
-            <div className="card__info">
-              <h4>2 ETH</h4>
-              <p>
-                <strong>3</strong> beds
-                <strong>2</strong> baths
-                <strong>1,200</strong> sqft
-              </p>
-              <p>1234 Main St, San Francisco, CA 94123</p>
-            </div>
-          </div>
         </div>
       </div>
+      {toggle && (
+        <Home
+          home={home}
+          provider={provider}
+          account={account}
+          escrow={escrow}
+          toggleFn={toggleFn}
+        />
+      )}
     </div>
   );
 }
